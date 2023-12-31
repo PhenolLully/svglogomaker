@@ -1,10 +1,27 @@
-// TODO: Include packages needed for this application
+const filesystem = require("./node_modules/graceful-fs/graceful-fs");
 const inquirer = require('inquirer');
+const {Circle, Square, Triangle} = require("./lib/shapes");
 
-// Node v10+ includes a promises module as an alternative to using callbacks with file system methods.
+
+class SVG{
+  constructor(){
+    this.text = ""
+    this.shape = ""
+  }
+  render(){
+    return `<svg version="1.1" width="300" height="200" xmlns="http://www.w3.org/2000/svg"></svg>`
+  }
+  setText(text, color){
+    this.text = ` <text x="150" y="125" font-size="60" text-anchor="middle" fill="${this.text}">SVG</text>`
+  }
+  setShape(shape){
+    this.shape = shape.render()
+  }
+}
+
 const { writeFile } = require('fs').promises;
 
-// TODO: Create an array of questions for user input
+
 const promptUser = () => {
   return inquirer.prompt([
     {
@@ -39,11 +56,10 @@ const generateLogo = ({ text, textColor, shapeColor, shapeImage}) =>
 
 
 
-// Bonus using writeFileSync as a promise
+
 const init = () => {
   promptUser()
-    // Use writeFile method imported from fs.promises to use promises instead of
-    // a callback function
+
     .then((answers) => writeFile('README.md', generateLogo(answers)))
     .then(() => console.log('Successfully wrote to README.md'))
     .catch((err) => console.error(err));
